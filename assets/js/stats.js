@@ -9,17 +9,24 @@ async function fetchTopScorers(leagueId) {
   return Array.isArray(data) ? data : [];
 }
 
+const DEFAULT_PLAYER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23374151'/%3E%3Ccircle cx='40' cy='28' r='12' fill='%236B7280'/%3E%3Cellipse cx='40' cy='65' rx='20' ry='16' fill='%236B7280'/%3E%3C/svg%3E";
+const DEFAULT_TEAM_LOGO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23374151' rx='4'/%3E%3Ctext x='12' y='16' text-anchor='middle' fill='%239CA3AF' font-size='12'%3ET%3C/text%3E%3C/svg%3E";
+
+function isValidImageUrl(url) {
+  return typeof url === 'string' && url.trim() !== '' && (url.startsWith('http://') || url.startsWith('https://'));
+}
+
 function createPlayerCard(player) {
   const card = document.createElement('div');
   card.className = 'player-card';
-  const photo = player.player_image || 'https://via.placeholder.com/80?text=Player';
-  const teamLogo = player.team_badge || 'https://via.placeholder.com/24?text=T';
+  const photo = isValidImageUrl(player.player_image) ? player.player_image : DEFAULT_PLAYER_IMAGE;
+  const teamLogo = isValidImageUrl(player.team_badge) ? player.team_badge : DEFAULT_TEAM_LOGO;
   card.innerHTML = `
-    <img src="${photo}" alt="${player.player_name}" class="player-photo" onerror="this.src='https://via.placeholder.com/80?text=Player'">
+    <img src="${photo}" alt="${player.player_name}" class="player-photo" onerror="this.onerror=null;this.src='${DEFAULT_PLAYER_IMAGE}'">
     <div class="player-info">
       <h3 class="player-name">${player.player_name}</h3>
       <div class="player-team">
-        <img src="${teamLogo}" alt="${player.team_name}" class="team-logo-sm" onerror="this.src='https://via.placeholder.com/24?text=T'">
+        <img src="${teamLogo}" alt="${player.team_name}" class="team-logo-sm" onerror="this.onerror=null;this.src='${DEFAULT_TEAM_LOGO}'">
         <span>${player.team_name}</span>
       </div>
       <div class="player-stats">
