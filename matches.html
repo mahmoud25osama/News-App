@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>League Matches - NewsHub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-brand">📰 NewsHub</a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
-      <ul class="nav-menu" id="nav-menu">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="matches.html" class="nav-link active">Matches</a></li>
-        <li><a href="table.html" class="nav-link">League Table</a></li>
-        <li><a href="stats.html" class="nav-link">Statistics</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <div class="page-container">
-    <h1 class="page-title">⚽ League Matches — Premier League 2024/25</h1>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Matches - NewsHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
 
-    <div class="filters">
-      <div class="filter-group">
-        <label for="filter-team" class="filter-label">Filter by team</label>
-        <input type="text" id="filter-team" placeholder="Team name..." class="filter-input">
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">📰 NewsHub</a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="matches.html" class="nav-link active">Matches</a></li>
+          <li><a href="table.html" class="nav-link">League Table</a></li>
+          <li><a href="stats.html" class="nav-link">Statistics</a></li>
+        </ul>
       </div>
-      <div class="filter-group">
-        <label for="filter-date" class="filter-label">Filter by date</label>
-        <input type="date" id="filter-date" class="filter-input">
+    </nav>
+
+    <div class="page-container">
+      <h1 class="page-title">⚽ League Matches — Premier League 2024/25</h1>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label for="filter-team" class="filter-label">Filter by team</label>
+          <input type="text" id="filter-team" placeholder="Team name..." class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="filter-date" class="filter-label">Filter by date</label>
+          <input type="date" id="filter-date" class="filter-input">
+        </div>
+      </div>
+
+      <div id="matches-container" class="matches-list">
+        <div class="spinner"></div>
       </div>
     </div>
 
-    <div id="matches-container" class="matches-list">
-      <div class="spinner"></div>
-    </div>
-  </div>
+    <footer class="footer">
+      <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
+    </footer>
 
-  <footer class="footer">
-    <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
-  </footer>
+    <script src="config.js"></script>
+    <script src="assets/js/matches.js"></script>
+    <script>
+      document.getElementById('nav-toggle').addEventListener('click', () => {
+        document.getElementById('nav-menu').classList.toggle('open');
+      });
+    </script>
+  </body>
 
-  <script src="config.js"></script>
-  <script src="js/matches.js"></script>
-  <script>
-    document.getElementById('nav-toggle').addEventListener('click', () => {
-      document.getElementById('nav-menu').classList.toggle('open');
-    });
-  </script>
-</body>
 </html>

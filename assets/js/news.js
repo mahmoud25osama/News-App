@@ -1,14 +1,14 @@
-const NEWS_CATEGORIES = ['politics', 'economy', 'entertainment', 'sports'];
+const NEWS_CATEGORIES = ['politics', 'economy', 'entertainment'];
 
 async function fetchNewsByCategory(category) {
   try {
-    const url = `https://gnews.io/api/v4/search?q=${category}&lang=en&max=3&apikey=${CONFIG.GNEWS_API_KEY}`;
+    const url = `https://gnews.io/api/v4/search?q=${ category }&lang=en&max=3&apikey=${ CONFIG.GNEWS_API_KEY }`;
     const response = await fetch(url);
     if (!response.ok) throw new Error('Failed to fetch news');
     const data = await response.json();
     return data.articles || [];
   } catch (error) {
-    console.error(`Error fetching ${category} news:`, error);
+    console.error(`Error fetching ${ category } news:`, error);
     return [];
   }
 }
@@ -21,16 +21,16 @@ function createNewsCard(article) {
     year: 'numeric', month: 'short', day: 'numeric'
   });
   card.innerHTML = `
-    <a href="${article.url}" target="_blank" rel="noopener">
+    <a href="${ article.url }" target="_blank" rel="noopener">
       <div class="news-card__image">
-        <img src="${imageUrl}" alt="${article.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+        <img src="${ imageUrl }" alt="${ article.title }" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
       </div>
       <div class="news-card__body">
-        <h3 class="news-card__title">${article.title}</h3>
-        <p class="news-card__description">${article.description || ''}</p>
+        <h3 class="news-card__title">${ article.title }</h3>
+        <p class="news-card__description">${ article.description || '' }</p>
         <div class="news-card__meta">
-          <span class="news-card__source">${article.source?.name || 'Unknown'}</span>
-          <span class="news-card__date">${date}</span>
+          <span class="news-card__source">${ article.source?.name || 'Unknown' }</span>
+          <span class="news-card__date">${ date }</span>
         </div>
       </div>
     </a>
@@ -47,7 +47,7 @@ function showNewsLoading(container) {
 }
 
 function showNewsError(container, category) {
-  container.innerHTML = `<div class="error-message">Failed to load ${category} news. Please try again later.</div>`;
+  container.innerHTML = `<div class="error-message">Failed to load ${ category } news. Please try again later.</div>`;
 }
 
 async function renderNewsSection() {
@@ -58,12 +58,12 @@ async function renderNewsSection() {
     const section = document.createElement('section');
     section.className = 'news-section';
     section.innerHTML = `
-      <h2 class="section-title">${category.charAt(0).toUpperCase() + category.slice(1)}</h2>
-      <div class="news-grid" id="news-${category}"></div>
+      <h2 class="section-title">${ category.charAt(0).toUpperCase() + category.slice(1) }</h2>
+      <div class="news-grid" id="news-${ category }"></div>
     `;
     newsMain.appendChild(section);
 
-    const grid = section.querySelector(`#news-${category}`);
+    const grid = section.querySelector(`#news-${ category }`);
     showNewsLoading(grid);
 
     const articles = await fetchNewsByCategory(category);

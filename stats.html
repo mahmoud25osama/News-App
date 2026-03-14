@@ -1,91 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Statistics - NewsHub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-brand">📰 NewsHub</a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
-      <ul class="nav-menu" id="nav-menu">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="matches.html" class="nav-link">Matches</a></li>
-        <li><a href="table.html" class="nav-link">League Table</a></li>
-        <li><a href="stats.html" class="nav-link active">Statistics</a></li>
-      </ul>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Statistics - NewsHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">📰 NewsHub</a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="matches.html" class="nav-link">Matches</a></li>
+          <li><a href="table.html" class="nav-link">League Table</a></li>
+          <li><a href="stats.html" class="nav-link active">Statistics</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-container">
+      <h1 class="page-title">📊 Player Statistics — Premier League 2024/25</h1>
+
+      <div id="stats-loading" class="stats-loading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Top Scorers -->
+      <section class="stats-section">
+        <div class="stats-section-header">
+          <h2 class="section-title">⚽ Top Scorers</h2>
+          <div class="sort-controls">
+            <label for="sort-scorers" class="sort-label">Sort by:</label>
+            <select id="sort-scorers" class="sort-select">
+              <option value="goals">Goals</option>
+              <option value="yellow">Yellow Cards</option>
+              <option value="red">Red Cards</option>
+            </select>
+          </div>
+        </div>
+        <div class="players-grid" id="scorers-grid"></div>
+      </section>
+
+      <!-- Yellow Cards -->
+      <section class="stats-section">
+        <div class="stats-section-header">
+          <h2 class="section-title">🟨 Most Yellow Cards</h2>
+          <div class="sort-controls">
+            <label for="sort-yellow" class="sort-label">Sort by:</label>
+            <select id="sort-yellow" class="sort-select">
+              <option value="yellow">Yellow Cards</option>
+              <option value="goals">Goals</option>
+              <option value="red">Red Cards</option>
+            </select>
+          </div>
+        </div>
+        <div class="players-grid" id="yellow-grid"></div>
+      </section>
+
+      <!-- Red Cards -->
+      <section class="stats-section">
+        <div class="stats-section-header">
+          <h2 class="section-title">🟥 Most Red Cards</h2>
+          <div class="sort-controls">
+            <label for="sort-red" class="sort-label">Sort by:</label>
+            <select id="sort-red" class="sort-select">
+              <option value="red">Red Cards</option>
+              <option value="goals">Goals</option>
+              <option value="yellow">Yellow Cards</option>
+            </select>
+          </div>
+        </div>
+        <div class="players-grid" id="red-grid"></div>
+      </section>
     </div>
-  </nav>
 
-  <div class="page-container">
-    <h1 class="page-title">📊 Player Statistics — Premier League 2024/25</h1>
+    <footer class="footer">
+      <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
+    </footer>
 
-    <div id="stats-loading" class="stats-loading"><div class="spinner"></div></div>
+    <script src="config.js"></script>
+    <script src="assets/js/stats.js"></script>
+    <script>
+      document.getElementById('nav-toggle').addEventListener('click', () => {
+        document.getElementById('nav-menu').classList.toggle('open');
+      });
+    </script>
+  </body>
 
-    <!-- Top Scorers -->
-    <section class="stats-section">
-      <div class="stats-section-header">
-        <h2 class="section-title">⚽ Top Scorers</h2>
-        <div class="sort-controls">
-          <label for="sort-scorers" class="sort-label">Sort by:</label>
-          <select id="sort-scorers" class="sort-select">
-            <option value="goals">Goals</option>
-            <option value="yellow">Yellow Cards</option>
-            <option value="red">Red Cards</option>
-          </select>
-        </div>
-      </div>
-      <div class="players-grid" id="scorers-grid"></div>
-    </section>
-
-    <!-- Yellow Cards -->
-    <section class="stats-section">
-      <div class="stats-section-header">
-        <h2 class="section-title">🟨 Most Yellow Cards</h2>
-        <div class="sort-controls">
-          <label for="sort-yellow" class="sort-label">Sort by:</label>
-          <select id="sort-yellow" class="sort-select">
-            <option value="yellow">Yellow Cards</option>
-            <option value="goals">Goals</option>
-            <option value="red">Red Cards</option>
-          </select>
-        </div>
-      </div>
-      <div class="players-grid" id="yellow-grid"></div>
-    </section>
-
-    <!-- Red Cards -->
-    <section class="stats-section">
-      <div class="stats-section-header">
-        <h2 class="section-title">🟥 Most Red Cards</h2>
-        <div class="sort-controls">
-          <label for="sort-red" class="sort-label">Sort by:</label>
-          <select id="sort-red" class="sort-select">
-            <option value="red">Red Cards</option>
-            <option value="goals">Goals</option>
-            <option value="yellow">Yellow Cards</option>
-          </select>
-        </div>
-      </div>
-      <div class="players-grid" id="red-grid"></div>
-    </section>
-  </div>
-
-  <footer class="footer">
-    <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
-  </footer>
-
-  <script src="config.js"></script>
-  <script src="js/stats.js"></script>
-  <script>
-    document.getElementById('nav-toggle').addEventListener('click', () => {
-      document.getElementById('nav-menu').classList.toggle('open');
-    });
-  </script>
-</body>
 </html>
