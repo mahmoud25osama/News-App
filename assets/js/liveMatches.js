@@ -1,5 +1,5 @@
 async function fetchLiveMatches() {
-  const url = `https://apiv3.apifootball.com/?action=get_events&match_live=1&APIkey=${CONFIG.APIFOOTBALL_API_KEY}`;
+  const url = `https://apiv2.allsportsapi.com/football/?action=get_events&match_live=1&APIkey=${CONFIG.ALLSPORTSAPI_KEY}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error('Live matches API error');
   const data = await response.json();

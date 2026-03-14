@@ -1,7 +1,7 @@
 let allMatches = [];
 
 async function fetchMatches(leagueId) {
-  const url = `https://apiv3.apifootball.com/?action=get_events&league_id=${leagueId}&from=2024-08-01&to=2025-06-30&APIkey=${CONFIG.APIFOOTBALL_API_KEY}`;
+  const url = `https://apiv2.allsportsapi.com/football/?action=get_events&league_id=${leagueId}&from=2024-08-01&to=2025-06-30&APIkey=${CONFIG.ALLSPORTSAPI_KEY}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error('Matches API error');
   const data = await response.json();
