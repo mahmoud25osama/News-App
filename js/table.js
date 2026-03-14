@@ -44,7 +44,8 @@ async function initTable() {
     standings.forEach((team, index) => {
       tbody.appendChild(createTableRow(team, index));
     });
-  } catch {
+  } catch (error) {
+    console.error('Standings fetch error:', error);
     if (loadingEl) loadingEl.remove();
     tbody.innerHTML = '<tr><td colspan="11" class="error-message">Failed to load standings. Please check your API key.</td></tr>';
   }

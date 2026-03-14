@@ -68,7 +68,8 @@ function initCurrencyConverter() {
     try {
       const data = await fetchConversion(from, to, amount);
       resultEl.textContent = `${amount} ${from} = ${data.conversion_result.toFixed(2)} ${to}`;
-    } catch {
+    } catch (error) {
+      console.error('Currency conversion error:', error);
       resultEl.textContent = 'Conversion failed. Please try again.';
     }
   });
@@ -81,7 +82,8 @@ async function initExchange() {
     try {
       const data = await fetchExchangeRates();
       renderExchangeRates(data);
-    } catch {
+    } catch (error) {
+      console.error('Exchange rates fetch error:', error);
       renderExchangeError('Failed to load exchange rates. Please check your API key.');
     }
   }

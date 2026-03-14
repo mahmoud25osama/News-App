@@ -51,7 +51,8 @@ async function initWeather() {
       try {
         const data = await fetchWeather(position.coords.latitude, position.coords.longitude);
         renderWeather(data);
-      } catch {
+      } catch (error) {
+        console.error('Weather fetch error:', error);
         renderWeatherError('Failed to load weather data. Please check your API key.');
       }
     },

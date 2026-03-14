@@ -81,7 +81,8 @@ async function initStats() {
     document.getElementById('sort-scorers')?.addEventListener('change', sortAndRender);
     document.getElementById('sort-yellow')?.addEventListener('change', sortAndRender);
     document.getElementById('sort-red')?.addEventListener('change', sortAndRender);
-  } catch {
+  } catch (error) {
+    console.error('Stats fetch error:', error);
     if (loadingEl) loadingEl.remove();
     const errorHtml = '<div class="error-message">Failed to load statistics. Please check your API key.</div>';
     ['scorers-grid', 'yellow-grid', 'red-grid'].forEach(id => {

@@ -49,7 +49,8 @@ async function initLiveMatches() {
     matches.slice(0, 5).forEach(match => {
       widget.appendChild(createMatchCard(match));
     });
-  } catch {
+  } catch (error) {
+    console.error('Live matches fetch error:', error);
     widget.innerHTML = '<div class="error-message">Failed to load live matches. Please check your API key.</div>';
   }
 }

@@ -87,7 +87,8 @@ async function initMatches() {
 
     document.getElementById('filter-team').addEventListener('input', filterMatches);
     document.getElementById('filter-date').addEventListener('change', filterMatches);
-  } catch {
+  } catch (error) {
+    console.error('Matches fetch error:', error);
     container.innerHTML = '<div class="error-message">Failed to load matches. Please check your API key.</div>';
   }
 }
