@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">📰 NewsHub</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="matches.html" class="nav-link">Matches</a></li>
+        <li><a href="table.html" class="nav-link">League Table</a></li>
+        <li><a href="stats.html" class="nav-link">Statistics</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-layout">
+    <main class="main-content" id="news-main">
+      <!-- News sections rendered by news.js -->
+    </main>
+
+    <aside class="sidebar">
+      <!-- Weather Widget -->
+      <div class="widget">
+        <h3 class="widget-title">🌤 Weather</h3>
+        <div id="weather-widget"><div class="spinner"></div></div>
+      </div>
+
+      <!-- Exchange Rates Widget -->
+      <div class="widget">
+        <h3 class="widget-title">💱 Exchange Rates (vs EGP)</h3>
+        <div id="exchange-widget"><div class="spinner"></div></div>
+
+        <!-- Currency Converter -->
+        <div class="converter">
+          <h4 class="converter-title">Currency Converter</h4>
+          <form id="converter-form" class="converter-form">
+            <input type="number" id="conv-amount" placeholder="Amount" min="0.01" step="0.01" required class="conv-input">
+            <select id="conv-from" class="conv-select">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="SAR">SAR</option>
+              <option value="EGP" selected>EGP</option>
+              <option value="AED">AED</option>
+              <option value="JPY">JPY</option>
+            </select>
+            <span class="conv-arrow">→</span>
+            <select id="conv-to" class="conv-select">
+              <option value="USD" selected>USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="SAR">SAR</option>
+              <option value="EGP">EGP</option>
+              <option value="AED">AED</option>
+              <option value="JPY">JPY</option>
+            </select>
+            <button type="submit" class="conv-btn">Convert</button>
+          </form>
+          <div id="conv-result" class="conv-result"></div>
+        </div>
+      </div>
+
+      <!-- Live Matches Widget -->
+      <div class="widget">
+        <h3 class="widget-title">⚽ Live Matches</h3>
+        <div id="live-matches-widget"><div class="spinner"></div></div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/exchange.js"></script>
+  <script src="js/liveMatches.js"></script>
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
