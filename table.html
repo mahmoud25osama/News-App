@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>League Table - NewsHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">📰 NewsHub</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="matches.html" class="nav-link">Matches</a></li>
+        <li><a href="table.html" class="nav-link active">League Table</a></li>
+        <li><a href="stats.html" class="nav-link">Statistics</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">🏆 League Table — Premier League 2024/25</h1>
+
+    <div class="table-wrapper">
+      <table class="standings-table" id="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th></th>
+            <th>Team</th>
+            <th title="Played">P</th>
+            <th title="Wins">W</th>
+            <th title="Draws">D</th>
+            <th title="Losses">L</th>
+            <th title="Goals For">GF</th>
+            <th title="Goals Against">GA</th>
+            <th title="Goal Difference">GD</th>
+            <th title="Points">PTS</th>
+          </tr>
+        </thead>
+        <tbody id="standings-tbody">
+          <tr id="table-loading">
+            <td colspan="11"><div class="spinner"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, APIFootball &amp; ExchangeRate-API.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="js/table.js"></script>
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
