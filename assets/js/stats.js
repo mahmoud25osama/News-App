@@ -1,7 +1,7 @@
 let statsData = { scorers: [], yellowCards: [], redCards: [] };
 
 async function fetchTopScorers(leagueId) {
-  const url = `https://apiv3.apifootball.com/?action=get_topscorers&league_id=${leagueId}&APIkey=${CONFIG.APIFOOTBALL_API_KEY}`;
+  const url = `https://apiv2.allsportsapi.com/football/?action=get_topscorers&league_id=${leagueId}&APIkey=${CONFIG.ALLSPORTSAPI_KEY}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error('Stats API error');
   const data = await response.json();
