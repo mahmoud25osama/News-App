@@ -1,64 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="League Standings — View full standings tables for the Big 5 European football leagues." />
-  <title>News Dashboard — Table</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
-    }
-  </script>
-  <link rel="stylesheet" href="assets/css/style.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+      content="League Standings — View full standings tables for the Big 5 European football leagues." />
+    <title>News Dashboard — Table</title>
 
-<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+      }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- ========================================== -->
-  <!-- Navigation Bar                             -->
-  <!-- ========================================== -->
-  <nav class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
-    <span class="text-xl font-extrabold text-blue-400">📰 NewsDash</span>
-    
-    <button class="block md:hidden text-2xl" onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
-    
-    <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
-      <li><a href="index.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏠 Home</a></li>
-      <li><a href="matches.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">⚽ Matches</a></li>
-      <li><a href="table.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium">📊 Table</a></li>
-      <li><a href="stats.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏆 Stats</a></li>
-    </ul>
-  </nav>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
 
-  <!-- ========================================== -->
-  <!-- Main Page Content                          -->
-  <!-- ========================================== -->
-  <div class="max-w-[1440px] mx-auto p-4 md:p-8">
-    
-    <!-- Page Header -->
-    <h1 class="text-2xl font-bold mb-2 flex items-center gap-2">
-      <span class="section-dot"></span>
-      <span id="page-title">League Standings</span>
-    </h1>
-    <p class="text-slate-400 text-sm mb-6">Full standings for the current season.</p>
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
 
-    <!-- League Tabs Navigation -->
-    <div class="flex gap-2 flex-wrap mb-6" id="league-tabs"></div>
+    <nav
+      class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
+      <span class="text-xl font-extrabold text-blue-400"><i class="fa-regular fa-newspaper"></i> NewsDash</span>
 
-    <!-- Table Container -->
-    <div id="table-spinner" class="spinner"></div>
-    
-    <div id="table-content">
-      <!-- JavaScript will inject the .table-container HTML here -->
+      <button class="block md:hidden text-2xl"
+        onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
+
+      <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
+        <li><a href="index.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="matches.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-futbol"></i> Matches</a></li>
+        <li><a href="table.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium"><i
+              class="fa-solid fa-table"></i> Table</a></li>
+        <li><a href="stats.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-trophy"></i> Stats</a></li>
+      </ul>
+    </nav>
+
+    <div class="max-w-[1440px] mx-auto p-4 md:p-8">
+
+      <h1 class="text-2xl font-bold mb-2 flex items-center gap-2">
+        <span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span>
+        <span id="page-title">League Standings</span>
+      </h1>
+      <p class="text-slate-400 text-sm mb-6">Full standings for the current season.</p>
+
+      <div class="flex gap-2 flex-wrap mb-6" id="league-tabs"></div>
+
+      <div id="table-spinner"
+        class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8"></div>
+
+      <div id="table-content">
+      </div>
+
     </div>
-    
-  </div>
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/table.js"></script>
-</body>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/table.js"></script>
+  </body>
+
 </html>

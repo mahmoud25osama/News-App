@@ -44,21 +44,21 @@ function renderLiveMatch(match) {
   const score = match.event_final_result || match.event_ft_result || '- : -';
 
   return `
-    <div class="live-match-card">
+    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800 mb-2.5 transition-colors hover:bg-slate-700">
       
       <!-- Home Team -->
-      <div class="live-team">
-        <img src="${homeLogo}" alt="${homeTeam}" class="live-team-logo" onerror="this.style.display='none'" />
-        <span class="live-team-name">${homeTeam}</span>
+      <div class="flex flex-col items-center gap-1 flex-1 text-center">
+        <img src="${homeLogo}" alt="${homeTeam}" class="w-8 h-8 object-contain" onerror="this.style.display='none'" />
+        <span class="text-[0.7rem] font-medium leading-tight">${homeTeam}</span>
       </div>
       
       <!-- Live Score -->
-      <div class="live-score-badge">${score}</div>
+      <div class="text-lg font-extrabold text-red-500 py-1 px-3 rounded-lg bg-red-500/10 min-w-[60px] text-center">${score}</div>
       
       <!-- Away Team -->
-      <div class="live-team">
-        <img src="${awayLogo}" alt="${awayTeam}" class="live-team-logo" onerror="this.style.display='none'" />
-        <span class="live-team-name">${awayTeam}</span>
+      <div class="flex flex-col items-center gap-1 flex-1 text-center">
+        <img src="${awayLogo}" alt="${awayTeam}" class="w-8 h-8 object-contain" onerror="this.style.display='none'" />
+        <span class="text-[0.7rem] font-medium leading-tight">${awayTeam}</span>
       </div>
       
     </div>`;
@@ -77,7 +77,7 @@ async function initLiveMatches() {
 
     if (matches.length === 0) {
       // 2. If no matches are live, display a simple message
-      content.innerHTML = '<div class="no-data">No live matches right now.</div>';
+      content.innerHTML = '<div class="text-slate-400 text-center py-8 text-sm col-span-full">No live matches right now.</div>';
     } else {
       // 3. Build HTML string for the first 6 matches
       let html = '';
@@ -96,7 +96,7 @@ async function initLiveMatches() {
     
   } catch (error) {
     // 4. Catch any errors (like an invalid API key) and display it gracefully
-    content.innerHTML = `<div class="error-msg">⚠️ ${error.message}</div>`;
+    content.innerHTML = `<div class="text-red-500 text-center py-4 text-sm">⚠️ ${error.message}</div>`;
     content.style.display = 'block';
   } finally {
     // 5. Hide the loading spinner

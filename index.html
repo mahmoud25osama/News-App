@@ -1,125 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="News Dashboard — Your one-stop hub for breaking news, live sports, weather, and currency rates." />
-  <title>News Dashboard — Home</title>
-  
-  <!-- We still bring in Tailwind because some layout classes (like grid, flex, mb-4) are very useful -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
-    }
-  </script>
-  
-  <!-- Our custom stylesheet with our simple, beginner-friendly component classes -->
-  <link rel="stylesheet" href="assets/css/style.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+      content="News Dashboard — Your one-stop hub for breaking news, live sports, weather, and currency rates." />
+    <title>News Dashboard — Home</title>
 
-<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+      }
+    </script>
 
-  <!-- ========================================== -->
-  <!-- Navigation Bar (Top of the screen)           -->
-  <!-- ========================================== -->
-  <nav class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
-    <span class="text-xl font-extrabold text-blue-400">📰 NewsDash</span>
-    
-    <!-- Mobile Menu Toggle Button -->
-    <button class="block md:hidden text-2xl" onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
-    
-    <!-- Navigation Links -->
-    <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
-      <li><a href="index.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium">🏠 Home</a></li>
-      <li><a href="matches.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">⚽ Matches</a></li>
-      <li><a href="table.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">📊 Table</a></li>
-      <li><a href="stats.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏆 Stats</a></li>
-    </ul>
-  </nav>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- ========================================== -->
-  <!-- Main Page Layout (News on left, Widgets on right) -->
-  <!-- ========================================== -->
-  <div class="grid lg:grid-cols-[1fr_360px] grid-cols-1 gap-8 max-w-[1440px] mx-auto p-4 md:p-8">
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
 
-    <!-- ─── Main Content Area (News) ─── -->
-    <main>
-      <div id="news-spinner" class="spinner"></div>
-      <div id="news-content"></div> <!-- JavaScript injects articles here -->
-    </main>
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
 
-    <!-- ─── Sidebar Area (Widgets) ─── -->
-    <aside class="flex flex-col gap-6">
+    <nav
+      class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
+      <span class="text-xl font-extrabold text-blue-400"><i class="fa-regular fa-newspaper"></i> NewsDash</span>
 
-      <!-- 1. Weather Widget -->
-      <div class="base-card" id="weather-widget">
-        <h3 class="section-title">🌤️ Weather</h3>
-        <div id="weather-spinner" class="spinner"></div>
-        <div id="weather-content" style="display:none;"></div>
-      </div>
+      <button class="block md:hidden text-2xl"
+        onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
 
-      <!-- 2. Exchange Rates Widget -->
-      <div class="base-card" id="exchange-widget">
-        <h3 class="section-title">💱 Exchange Rates</h3>
-        <div id="exchange-spinner" class="spinner"></div>
-        
-        <div id="exchange-content" style="display:none;">
-          <!-- Top Exchange Rates List -->
-          <div id="rates-list"></div>
-          
-          <!-- Currency Converter Form -->
-          <div class="mt-4 pt-4 border-t border-slate-600/40">
-            <h4 class="text-sm mb-3 text-slate-400">Currency Converter</h4>
-            
-            <div class="flex gap-2 mb-2">
-              <input type="number" id="conv-amount" placeholder="Amount" value="1" min="0" step="any"
-                class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500" />
-              
-              <select id="conv-from" class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500">
-                <option value="USD">USD</option>
-                <option value="SAR">SAR</option>
-                <option value="EGP">EGP</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
+      <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
+        <li><a href="index.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium"><i
+              class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="matches.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-futbol"></i> Matches</a>
+        </li>
+        <li><a href="table.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-table"></i> Table</a>
+        </li>
+        <li><a href="stats.html"
+            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
+              class="fa-solid fa-trophy"></i> Stats</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="grid lg:grid-cols-[1fr_360px] grid-cols-1 gap-8 max-w-[1440px] mx-auto p-4 md:p-8">
+
+      <main>
+        <div id="news-spinner"
+          class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8">
+        </div>
+        <div id="news-content"></div> <!-- JavaScript injects articles here -->
+      </main>
+
+      <aside class="flex flex-col gap-6">
+
+        <div class="bg-slate-800/65 border border-slate-600/40 rounded-2xl shadow-xl backdrop-blur-md p-5"
+          id="weather-widget">
+          <h3 class="text-xl font-bold mb-5 flex items-center gap-2"><i
+              class="fa-solid fa-cloud-sun text-amber-400"></i> Weather</h3>
+          <div id="weather-spinner"
+            class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8">
+          </div>
+          <div id="weather-content" style="display:none;"></div>
+        </div>
+
+        <div class="bg-slate-800/65 border border-slate-600/40 rounded-2xl shadow-xl backdrop-blur-md p-5"
+          id="exchange-widget">
+          <h3 class="text-xl font-bold mb-5 flex items-center gap-2"><i
+              class="fa-solid fa-money-bill-transfer text-green-400"></i> Exchange Rates</h3>
+          <div id="exchange-spinner"
+            class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8">
+          </div>
+
+          <div id="exchange-content" style="display:none;">
+            <div id="rates-list"></div>
+
+            <div class="mt-4 pt-4 border-t border-slate-600/40">
+              <h4 class="text-sm mb-3 text-slate-400">Currency Converter</h4>
+
+              <div class="flex gap-2 mb-2">
+                <input type="number" id="conv-amount" placeholder="Amount" value="1" min="0" step="any"
+                  class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500" />
+
+                <select id="conv-from"
+                  class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500">
+                  <option value="USD">USD</option>
+                  <option value="SAR">SAR</option>
+                  <option value="EGP">EGP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                </select>
+              </div>
+
+              <div class="flex gap-2 mb-2">
+                <select id="conv-to"
+                  class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500">
+                  <option value="EGP">EGP</option>
+                  <option value="USD">USD</option>
+                  <option value="SAR">SAR</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                </select>
+              </div>
+
+              <div id="conv-result" class="text-xl font-bold text-cyan-500 text-center mt-2 min-h-[1.8rem]">—</div>
             </div>
-            
-            <div class="flex gap-2 mb-2">
-              <select id="conv-to" class="flex-1 px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500">
-                <option value="EGP">EGP</option>
-                <option value="USD">USD</option>
-                <option value="SAR">SAR</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
-            </div>
-            
-            <!-- Where the calculated conversion result lives -->
-            <div id="conv-result" class="text-xl font-bold text-cyan-500 text-center mt-2 min-h-[1.8rem]">—</div>
           </div>
         </div>
-      </div>
 
-      <!-- 3. Live Matches Widget -->
-      <div class="base-card" id="live-widget">
-        <h3 class="section-title">🔴 Live Matches</h3>
-        <div id="live-spinner" class="spinner"></div>
-        <div id="live-content" style="display:none;"></div>
-      </div>
+        <div class="bg-slate-800/65 border border-slate-600/40 rounded-2xl shadow-xl backdrop-blur-md p-5"
+          id="live-widget">
+          <h3 class="text-xl font-bold mb-5 flex items-center gap-2"><i class="fa-solid fa-circle text-red-500"></i>
+            Live Matches</h3>
+          <div id="live-spinner"
+            class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8">
+          </div>
+          <div id="live-content" style="display:none;"></div>
+        </div>
 
-    </aside>
-  </div>
+      </aside>
+    </div>
 
-  <!-- ========================================== -->
-  <!-- Required Scripts                             -->
-  <!-- ========================================== -->
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/news.js"></script>
-  <script src="assets/js/weather.js"></script>
-  <script src="assets/js/exchange.js"></script>
-  <script src="assets/js/liveMatches.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/news.js"></script>
+    <script src="assets/js/weather.js"></script>
+    <script src="assets/js/exchange.js"></script>
+    <script src="assets/js/liveMatches.js"></script>
 
-</body>
+  </body>
+
 </html>

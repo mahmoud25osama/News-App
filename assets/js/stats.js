@@ -3,9 +3,12 @@
 // ====================================
 
 // --- Variables ---
-let currentLeague = CONFIG.LEAGUES[0].id; // which league is selected
-let currentStat = "goals"; // which stat tab is active: "goals", "yellow_cards", or "red_cards"
-let allPlayers = []; // stores all merged player data
+let currentLeague = CONFIG.LEAGUES[0].id;
+// which league is selected
+let currentStat = "goals";
+// which stat tab is active: "goals", "yellow_cards", or "red_cards"
+let allPlayers = [];
+// stores all merged player data
 
 // --- Get HTML elements ---
 const leagueTabsDiv = document.getElementById("league-tabs");
@@ -22,13 +25,13 @@ function buildLeagueTabs() {
 
   for (let i = 0; i < CONFIG.LEAGUES.length; i++) {
     const league = CONFIG.LEAGUES[i];
-    const isActive = (i === 0) ? "active" : "";
+    const isActive = (i === 0) ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-transparent text-white' : 'bg-slate-800 border-slate-600/40 text-slate-400 hover:border-blue-500 hover:text-slate-100';
 
     html += `
-      <button class="league-tab ${isActive}" data-id="${league.id}">
-        <img src="${league.logo}" alt="${league.name}" class="w-5 h-5 object-contain"
+      <button class="league-tab flex items-center gap-2 px-5 py-2 border rounded-full text-sm font-semibold cursor-pointer transition-all ${ isActive }" data-id="${ league.id }">
+        <img src="${ league.logo }" alt="${ league.name }" class="w-5 h-5 object-contain"
              onerror="this.style.display='none'" />
-        ${league.name}
+        ${ league.name }
       </button>
     `;
   }
@@ -44,17 +47,19 @@ leagueTabsDiv.addEventListener("click", function (e) {
   // Remove "active" from all tabs, add to clicked one
   const allTabs = leagueTabsDiv.querySelectorAll(".league-tab");
   for (let j = 0; j < allTabs.length; j++) {
-    allTabs[j].classList.remove("active");
+    allTabs[j].classList.remove('bg-gradient-to-br', 'from-blue-500', 'to-cyan-500', 'border-transparent', 'text-white');
+    allTabs[j].classList.add('bg-slate-800', 'border-slate-600/40', 'text-slate-400', 'hover:border-blue-500', 'hover:text-slate-100');
   }
-  btn.classList.add("active");
+  btn.classList.remove('bg-slate-800', 'border-slate-600/40', 'text-slate-400', 'hover:border-blue-500', 'hover:text-slate-100');
+  btn.classList.add('bg-gradient-to-br', 'from-blue-500', 'to-cyan-500', 'border-transparent', 'text-white');
 
   // Update league and reload
   currentLeague = Number(btn.getAttribute('data-id'));
-  
+
   // Find league name
   const leagueNameInfo = CONFIG.LEAGUES.find(l => l.id === currentLeague);
   pageTitle.textContent = leagueNameInfo ? leagueNameInfo.name + " Statistics" : "Player Statistics";
-  
+
   loadStats();
 });
 
@@ -68,9 +73,11 @@ statTabsDiv.addEventListener("click", function (e) {
   // Remove "active" from all, add to clicked
   const allStatTabs = statTabsDiv.querySelectorAll(".stat-btn");
   for (let k = 0; k < allStatTabs.length; k++) {
-    allStatTabs[k].classList.remove("active");
+    allStatTabs[k].classList.remove("active", "bg-[var(--btn-color)]", "border-[var(--btn-color)]", "text-white", "shadow-lg");
+    allStatTabs[k].classList.add("bg-slate-800", "border-slate-600/40", "text-slate-400");
   }
-  btn.classList.add("active");
+  btn.classList.remove("bg-slate-800", "border-slate-600/40", "text-slate-400");
+  btn.classList.add("active", "bg-[var(--btn-color)]", "border-[var(--btn-color)]", "text-white", "shadow-lg");
 
   // Update current stat and re-render (no new API call needed!)
   currentStat = btn.getAttribute('data-stat');
@@ -106,7 +113,7 @@ async function getTeamsPlayers(leagueId) {
 
   for (let i = 0; i < data.result.length; i++) {
     const team = data.result[i];
-    
+
     // Skip if team has no players listed
     if (!team.players) continue;
 
@@ -135,16 +142,19 @@ async function loadStats() {
   // Show spinner, clear grid
   spinner.style.display = "flex";
   playersGrid.innerHTML = "";
-  
+
   // reset to goals tab by default when league loads
   currentStat = "goals";
 
   // Reset stat tab buttons to 'goals'
   const allStatTabs = statTabsDiv.querySelectorAll(".stat-btn");
   for (let m = 0; m < allStatTabs.length; m++) {
-    allStatTabs[m].classList.remove("active");
+    allStatTabs[m].classList.remove("active", "bg-[var(--btn-color)]", "border-[var(--btn-color)]", "text-white", "shadow-lg");
+    allStatTabs[m].classList.add("bg-slate-800", "border-slate-600/40", "text-slate-400");
   }
-  statTabsDiv.querySelector('[data-stat="goals"]').classList.add("active");
+  const defaultTab = statTabsDiv.querySelector('[data-stat="goals"]');
+  defaultTab.classList.remove("bg-slate-800", "border-slate-600/40", "text-slate-400");
+  defaultTab.classList.add("active", "bg-[var(--btn-color)]", "border-[var(--btn-color)]", "text-white", "shadow-lg");
 
   try {
     // Fetch both APIs
@@ -196,9 +206,9 @@ async function loadStats() {
 
     // Show the players
     showPlayers();
-    
+
   } catch (error) {
-    playersGrid.innerHTML = '<div class="error-msg col-span-full">Failed to load stats. Please try again.</div>';
+    playersGrid.innerHTML = '<div class="col-span-full text-red-500 text-center py-4 text-sm">Failed to load stats. Please try again.</div>';
   }
 
   // Hide spinner
@@ -227,7 +237,7 @@ function showPlayers() {
   const top20 = filtered.slice(0, 20);
 
   if (top20.length === 0) {
-    playersGrid.innerHTML = '<div class="no-data col-span-full">No data available for this stat.</div>';
+    playersGrid.innerHTML = '<div class="col-span-full text-slate-400 text-center py-8 text-sm">No data available for this stat.</div>';
     return;
   }
 
@@ -253,16 +263,16 @@ function createPlayerCard(player, rank) {
   const value = player[currentStat]; // Example: player["goals"]
 
   // Pick color based on stat type
-  let colorClass = "stat-val-green";
+  let colorClass = "text-green-400";
   let label = "Goals";
-  
+
   if (currentStat === "yellow_cards") {
-    colorClass = "stat-val-amber";
+    colorClass = "text-amber-400";
     label = "Yellow";
   }
-  
+
   if (currentStat === "red_cards") {
-    colorClass = "stat-val-red";
+    colorClass = "text-red-400";
     label = "Red";
   }
 
@@ -273,38 +283,38 @@ function createPlayerCard(player, rank) {
   for (let p = 0; p < nameParts.length && p < 2; p++) {
     initials += nameParts[p][0];
   }
-  
+
   const fallback = "https://ui-avatars.com/api/?name=" + encodeURIComponent(initials) + "&background=3b82f6&color=fff&bold=true&size=112";
   const imgSrc = (player.player_image && player.player_image.trim() !== "") ? player.player_image : fallback;
 
   // Team logo HTML (only show if available)
   let teamLogoHtml = "";
   if (teamLogo) {
-    teamLogoHtml = `<img src="${teamLogo}" alt="" class="player-team-logo" onerror="this.style.display='none'" />`;
+    teamLogoHtml = `<img src="${ teamLogo }" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'" />`;
   }
 
   return `
-    <div class="player-card">
+    <div class="bg-slate-800/65 border border-slate-600/40 rounded-xl p-4 flex items-center gap-3 transition-transform hover:-translate-y-0.5 animate-[fadeIn_0.3s_ease-out_both]">
       
       <!-- Rank + Avatar -->
-      <div class="player-avatar">
-        <img src="${imgSrc}" alt="${name}" onerror="this.onerror=null; this.src='${fallback}';" loading="lazy" />
-        <span class="player-rank">${rank}</span>
+      <div class="relative">
+        <img src="${ imgSrc }" alt="${ name }" onerror="this.onerror=null; this.src='${ fallback }';" loading="lazy" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500 bg-slate-700" />
+        <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-blue-500 text-white text-[0.6rem] font-bold flex items-center justify-center border-2 border-slate-900">${ rank }</span>
       </div>
 
       <!-- Name + Team -->
-      <div class="player-info">
-        <div class="player-name">${name}</div>
-        <div class="player-team">
-          ${teamLogoHtml}
-          <span>${team}</span>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis">${ name }</div>
+        <div class="flex items-center gap-1 text-xs text-slate-400 mt-0.5">
+          ${ teamLogoHtml }
+          <span>${ team }</span>
         </div>
       </div>
 
       <!-- Stat Value (Goals/Yellows/etc) -->
-      <div class="player-stat">
-        <div class="stat-number ${colorClass}">${value}</div>
-        <div class="stat-label">${label}</div>
+      <div class="text-center px-2">
+        <div class="text-lg font-bold ${ colorClass }">${ value }</div>
+        <div class="text-[0.6rem] text-slate-500 uppercase">${ label }</div>
       </div>
       
     </div>

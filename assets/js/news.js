@@ -48,17 +48,17 @@ function renderNewsCard(article) {
 
   // Return the HTML structure for this article
   return `
-    <div class="news-card">
-      <img src="${imageSrc}" alt="${article.title}" loading="lazy" class="news-img"
+    <div class="bg-slate-800/65 border border-slate-600/40 rounded-2xl overflow-hidden flex flex-col transition-all hover:-translate-y-1 hover:shadow-2xl">
+      <img src="${imageSrc}" alt="${article.title}" loading="lazy" class="w-full h-[180px] object-cover"
            onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'" />
-      <div class="news-card-body">
-        <h3 class="news-title">
-          <a href="${article.url}" target="_blank" rel="noopener">${article.title}</a>
+      <div class="p-4 flex flex-col flex-1">
+        <h3 class="text-sm font-semibold leading-tight mb-2">
+          <a href="${article.url}" target="_blank" rel="noopener" class="text-slate-100 hover:text-blue-500 transition-colors">${article.title}</a>
         </h3>
-        <p class="news-desc">${article.description || ''}</p>
-        <div class="news-meta">
-          <span class="news-source">${sourceName}</span>
-          <span class="news-date">${date}</span>
+        <p class="text-xs text-slate-400 mb-3 flex-1">${article.description || ''}</p>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span class="text-cyan-500 font-semibold">${sourceName}</span>
+          <span>${date}</span>
         </div>
       </div>
     </div>`;
@@ -82,16 +82,16 @@ function renderCategoryRow(category, articles) {
     }
   } else {
     // If we don't have articles, show a friendly message
-    cardsHtml = '<div class="no-data">No articles found for this category.</div>';
+    cardsHtml = '<div class="col-span-full text-slate-400 text-center py-8 text-sm">No articles found for this category.</div>';
   }
 
   // Return the full section HTML: the category title + the grid of cards
   return `
-    <section class="news-section">
-      <h2 class="section-title">
-        <span class="section-dot"></span> ${label}
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-5 flex items-center gap-2">
+        <span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span> ${label}
       </h2>
-      <div class="news-grid">${cardsHtml}</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">${cardsHtml}</div>
     </section>`;
 }
 
@@ -127,7 +127,7 @@ async function initNews() {
     
   } catch (error) {
     // If something goes completely wrong, show an error message on the page
-    contentContainer.innerHTML = `<div class="error-msg">⚠️ Failed to load news: ${error.message}</div>`;
+    contentContainer.innerHTML = `<div class="text-red-500 text-center py-4 text-sm">⚠️ Failed to load news: ${error.message}</div>`;
   } finally {
     // 4. Hide the loading spinner regardless of success or failure
     spinner.style.display = 'none';

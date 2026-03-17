@@ -46,13 +46,13 @@ function renderRates(rates) {
   }
 
   return `
-    <div class="exchange-item">
-      <span class="font-semibold">🇺🇸 1 USD</span>
-      <span class="exchange-value">${usdToEgp} EGP</span>
+    <div class="flex justify-between items-center py-2.5 border-b border-slate-600/40">
+      <span class="font-semibold"><i class="fa-solid fa-dollar-sign text-green-400"></i> 1 USD</span>
+      <span class="text-lg text-green-500 font-bold">${usdToEgp} EGP</span>
     </div>
-    <div class="exchange-item no-border">
-      <span class="font-semibold">🇸🇦 1 SAR</span>
-      <span class="exchange-value">${sarToEgp} EGP</span>
+    <div class="flex justify-between items-center py-2.5">
+      <span class="font-semibold"><i class="fa-solid fa-coins text-amber-400"></i> 1 SAR</span>
+      <span class="text-lg text-green-500 font-bold">${sarToEgp} EGP</span>
     </div>`;
 }
 
@@ -113,7 +113,7 @@ async function initExchange() {
     convertCurrency();
     
   } catch (error) {
-    content.innerHTML = `<div class="error-msg">⚠️ Failed to load rates: ${error.message}</div>`;
+    content.innerHTML = `<div class="text-red-500 text-center py-4 text-sm">⚠️ Failed to load rates: ${error.message}</div>`;
     content.style.display = 'block';
   } finally {
     spinner.style.display = 'none';
