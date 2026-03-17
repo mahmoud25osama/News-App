@@ -19,28 +19,22 @@ function buildLeagueTabs() {
 
   container.innerHTML = html;
 
-  // Listen for clicks on the buttons
   container.addEventListener('click', function (event) {
     const clickedButton = event.target.closest('.league-tab');
 
-    // If we didn't click inside a button, do nothing
     if (!clickedButton) return;
 
-    // Find all tabs and remove the "active" class from them
     const allTabs = container.querySelectorAll('.league-tab');
     for (let j = 0; j < allTabs.length; j++) {
       allTabs[j].classList.remove('bg-gradient-to-br', 'from-blue-500', 'to-cyan-500', 'border-transparent', 'text-white');
       allTabs[j].classList.add('bg-slate-800', 'border-slate-600/40', 'text-slate-400', 'hover:border-blue-500', 'hover:text-slate-100');
     }
 
-    // Add "active" class only to the clicked tab
     clickedButton.classList.remove('bg-slate-800', 'border-slate-600/40', 'text-slate-400', 'hover:border-blue-500', 'hover:text-slate-100');
     clickedButton.classList.add('bg-gradient-to-br', 'from-blue-500', 'to-cyan-500', 'border-transparent', 'text-white');
 
-    // Update the current league ID
     currentLeagueId = Number(clickedButton.getAttribute('data-id'));
 
-    // Find the league's name to update the page title
     for (let k = 0; k < CONFIG.LEAGUES.length; k++) {
       if (CONFIG.LEAGUES[k].id === currentLeagueId) {
         document.getElementById('page-title').textContent = `${ CONFIG.LEAGUES[k].name } Matches`;
@@ -48,7 +42,6 @@ function buildLeagueTabs() {
       }
     }
 
-    // Reload the matches for the new league
     loadMatches();
   });
 }
@@ -99,11 +92,9 @@ function getMatchStatus(match) {
   return { type: 'upcoming', label: '' };
 }
 
-// Builds the HTML for a single Match Box
 function renderMatchCard(match) {
   const statusInfo = getMatchStatus(match);
 
-  // Get teams and score
   const score = match.event_final_result || '- : -';
   const home = match.event_home_team || 'TBD';
   const away = match.event_away_team || 'TBD';
@@ -112,7 +103,6 @@ function renderMatchCard(match) {
   const dateStr = match.event_date || '';
   const timeStr = match.event_time || '';
 
-  // Calculate the HTML for the middle part of the card based on match status
   let centerHTML = '';
   if (statusInfo.type === 'finished') {
     centerHTML = `
@@ -144,50 +134,38 @@ function renderMatchCard(match) {
     </div>`;
 }
 
-/**
- * 4) Filter Logic
- * Applying user's search and date filters
- */
+
 function applyFilters() {
   const teamSearchText = document.getElementById('filter-team').value.toLowerCase().trim();
   const selectedDate = document.getElementById('filter-date').value;
 
-  // Start with all loaded matches
   let filteredMatches = [];
 
-  // Loop through all matches to see if they match the filters
   for (let i = 0; i < allMatches.length; i++) {
     const match = allMatches[i];
     let keepMatch = true;
 
-    // Filter by team name
     if (teamSearchText !== "") {
       const homeName = (match.event_home_team || '').toLowerCase();
       const awayName = (match.event_away_team || '').toLowerCase();
 
       if (!homeName.includes(teamSearchText) && !awayName.includes(teamSearchText)) {
-        keepMatch = false; // The text doesn't match either team
       }
     }
 
-    // Filter by date
     if (selectedDate !== "") {
       if (match.event_date !== selectedDate) {
-        keepMatch = false; // It's not on the selected date
       }
     }
 
-    // If both filters passed, keep the match in the list
     if (keepMatch) {
       filteredMatches.push(match);
     }
   }
 
-  // Draw the remaining matches
   renderGrid(filteredMatches);
 }
 
-// Draws the final list of matches on the screen
 function renderGrid(matches) {
   const grid = document.getElementById('matches-grid');
 
@@ -204,10 +182,7 @@ function renderGrid(matches) {
   grid.innerHTML = html;
 }
 
-/**
- * 5) Main Loading Function
- * Called when a user clicks a new tab or when page first loads
- */
+
 async function loadMatches() {
   const spinner = document.getElementById('matches-spinner');
   const grid = document.getElementById('matches-grid');
@@ -216,29 +191,23 @@ async function loadMatches() {
   grid.innerHTML = '';
 
   try {
-    // Wait for the API to give us the matches
     allMatches = await fetchMatches(currentLeagueId);
 
-    // Sort matches: Live first -> Upcoming Second -> Finished Third
     allMatches.sort(function (a, b) {
       const statusA = getMatchStatus(a);
       const statusB = getMatchStatus(b);
 
-      // We assign points to the types. Lower points = higher position
       const order = { live: 0, upcoming: 1, finished: 2 };
 
-      // If categories are different, sort by category
       if (order[statusA.type] !== order[statusB.type]) {
         return order[statusA.type] - order[statusB.type];
       }
 
-      // If categories are the same, order by Date (newest first for finished, oldest first for upcoming)
       const dateA = a.event_date || '';
       const dateB = b.event_date || '';
       return dateB.localeCompare(dateA);
     });
 
-    // Finally apply any active filters and render
     applyFilters();
 
   } catch (error) {
@@ -248,24 +217,16 @@ async function loadMatches() {
   }
 }
 
-/**
- * 6) Boot up when page is loaded
- */
+
 document.addEventListener('DOMContentLoaded', function () {
-  // Setup the tabs
   buildLeagueTabs();
 
-  // Setup the search boxes to run filters when typed/changed
   document.getElementById('filter-team').addEventListener('input', applyFilters);
   document.getElementById('filter-date').addEventListener('change', applyFilters);
 
-  // Set default date to today
-  const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
   document.getElementById('filter-date').value = today;
 
-  // Set initial title based on first config league
   document.getElementById('page-title').textContent = `${ CONFIG.LEAGUES[0].name } Matches`;
 
-  // Start the loading
   loadMatches();
 });
