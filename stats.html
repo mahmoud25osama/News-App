@@ -1,96 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Statistics - NewsHub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Player Statistics — Top scorers, yellow cards, and red cards across Europe's top leagues." />
+  <title>News Dashboard — Stats</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
 
-  <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-brand">📰 NewsHub</a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
-        <ul class="nav-menu" id="nav-menu">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="matches.html" class="nav-link">Matches</a></li>
-          <li><a href="table.html" class="nav-link">League Table</a></li>
-          <li><a href="stats.html" class="nav-link active">Statistics</a></li>
-        </ul>
-      </div>
-    </nav>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
 
-    <div class="page-container">
-      <h1 class="page-title">📊 Player Statistics — Premier League 2024/25</h1>
+  <!-- ========================================== -->
+  <!-- Navigation Bar                             -->
+  <!-- ========================================== -->
+  <nav class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
+    <span class="text-xl font-extrabold text-blue-400">📰 NewsDash</span>
+    
+    <button class="block md:hidden text-2xl" onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
+    
+    <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
+      <li><a href="index.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏠 Home</a></li>
+      <li><a href="matches.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">⚽ Matches</a></li>
+      <li><a href="table.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">📊 Table</a></li>
+      <li><a href="stats.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium">🏆 Stats</a></li>
+    </ul>
+  </nav>
 
-      <div id="stats-loading" class="stats-loading">
-        <div class="spinner"></div>
-      </div>
+  <!-- ========================================== -->
+  <!-- Main Page Content                          -->
+  <!-- ========================================== -->
+  <div class="max-w-[1440px] mx-auto p-4 md:p-8">
 
-      <!-- Top Scorers -->
-      <section class="stats-section">
-        <div class="stats-section-header">
-          <h2 class="section-title">⚽ Top Scorers</h2>
-          <div class="sort-controls">
-            <label for="sort-scorers" class="sort-label">Sort by:</label>
-            <select id="sort-scorers" class="sort-select">
-              <option value="goals">Goals</option>
-              <option value="yellow">Yellow Cards</option>
-              <option value="red">Red Cards</option>
-            </select>
-          </div>
-        </div>
-        <div class="players-grid" id="scorers-grid"></div>
-      </section>
+    <!-- Page Title -->
+    <h1 class="text-2xl font-bold mb-1 flex items-center gap-2">
+      <span class="section-dot"></span>
+      <span id="page-title">Player Statistics</span>
+    </h1>
+    <p class="text-slate-400 text-sm mb-6">Top scorers, yellow cards, and red cards for the current season.</p>
 
-      <!-- Yellow Cards -->
-      <section class="stats-section">
-        <div class="stats-section-header">
-          <h2 class="section-title">🟨 Most Yellow Cards</h2>
-          <div class="sort-controls">
-            <label for="sort-yellow" class="sort-label">Sort by:</label>
-            <select id="sort-yellow" class="sort-select">
-              <option value="yellow">Yellow Cards</option>
-              <option value="goals">Goals</option>
-              <option value="red">Red Cards</option>
-            </select>
-          </div>
-        </div>
-        <div class="players-grid" id="yellow-grid"></div>
-      </section>
+    <!-- League Tabs (Filled by JavaScript) -->
+    <div class="flex gap-2 flex-wrap mb-6" id="league-tabs"></div>
 
-      <!-- Red Cards -->
-      <section class="stats-section">
-        <div class="stats-section-header">
-          <h2 class="section-title">🟥 Most Red Cards</h2>
-          <div class="sort-controls">
-            <label for="sort-red" class="sort-label">Sort by:</label>
-            <select id="sort-red" class="sort-select">
-              <option value="red">Red Cards</option>
-              <option value="goals">Goals</option>
-              <option value="yellow">Yellow Cards</option>
-            </select>
-          </div>
-        </div>
-        <div class="players-grid" id="red-grid"></div>
-      </section>
+    <!-- Stat Toggle Buttons (Goals / Yellow / Red) -->
+    <div class="flex gap-2 mb-6" id="stat-tabs">
+      <button class="stat-btn active" data-stat="goals" style="--btn-color: #3b82f6;">⚽ Top Scorers</button>
+      <button class="stat-btn" data-stat="yellow_cards" style="--btn-color: #f59e0b;">🟨 Yellow</button>
+      <button class="stat-btn" data-stat="red_cards" style="--btn-color: #ef4444;">🟥 Red</button>
     </div>
 
-    <footer class="footer">
-      <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, AllSportsAPI &amp; ExchangeRate-API.</p>
-    </footer>
+    <!-- Loading Spinner -->
+    <div id="spinner" class="spinner"></div>
 
-    <script src="config.js"></script>
-    <script src="assets/js/stats.js"></script>
-    <script>
-      document.getElementById('nav-toggle').addEventListener('click', () => {
-        document.getElementById('nav-menu').classList.toggle('open');
-      });
-    </script>
-  </body>
+    <!-- Player Cards Grid (Filled by JavaScript) -->
+    <div id="players-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <!-- JavaScript will inject .player-card elements here -->
+    </div>
+    
+  </div>
 
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/stats.js"></script>
+</body>
 </html>

@@ -1,65 +1,86 @@
+// ═══════════════════════════════════════════════════════════
+//  weather.js — Weather Widget Fetch & Render
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Fetches the current weather for a specific latitude and longitude
+ */
 async function fetchWeather(lat, lon) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CONFIG.OPENWEATHER_API_KEY}`;
+  // 1. Build the URL using the API Key and coordinates
+  const url = `${CONFIG.WEATHER_BASE}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CONFIG.WEATHER_API_KEY}`;
+  
+  // 2. Make the network request
   const response = await fetch(url);
-  if (!response.ok) throw new Error('Weather API error');
-  return response.json();
-}
-
-function getWeatherIconUrl(iconCode) {
-  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-}
-
-function renderWeather(data) {
-  const widget = document.getElementById('weather-widget');
-  if (!widget) return;
-  widget.innerHTML = `
-    <div class="weather-content">
-      <div class="weather-header">
-        <img src="${getWeatherIconUrl(data.weather[0].icon)}" alt="${data.weather[0].description}" class="weather-icon">
-        <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
-      </div>
-      <div class="weather-city">${data.name}, ${data.sys.country}</div>
-      <div class="weather-desc">${data.weather[0].description}</div>
-      <div class="weather-details">
-        <span>Humidity: ${data.main.humidity}%</span>
-        <span>Wind: ${Math.round(data.wind.speed)} m/s</span>
-      </div>
-    </div>
-  `;
-}
-
-function renderWeatherError(message) {
-  const widget = document.getElementById('weather-widget');
-  if (!widget) return;
-  widget.innerHTML = `<div class="error-message">${message}</div>`;
-}
-
-function renderWeatherLoading() {
-  const widget = document.getElementById('weather-widget');
-  if (!widget) return;
-  widget.innerHTML = `<div class="spinner"></div>`;
-}
-
-async function initWeather() {
-  renderWeatherLoading();
-  if (!navigator.geolocation) {
-    renderWeatherError('Geolocation is not supported by your browser.');
-    return;
+  
+  // 3. Check for errors
+  if (!response.ok) {
+    throw new Error(`Weather API returned an error: ${response.status}`);
   }
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      try {
-        const data = await fetchWeather(position.coords.latitude, position.coords.longitude);
-        renderWeather(data);
-      } catch (error) {
-        console.error('Weather fetch error:', error);
-        renderWeatherError('Failed to load weather data. Please check your API key.');
-      }
-    },
-    () => {
-      renderWeatherError('Location access denied. Please enable location permissions.');
-    }
-  );
+  
+  // 4. Return the data as a JavaScript object
+  const data = await response.json();
+  return data;
 }
 
+/**
+ * Creates the HTML to display the weather data
+ */
+function renderWeather(data) {
+  // Get the icon URL from OpenWeatherMap
+  const iconCode = data.weather[0].icon;
+  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  
+  // Round the temperature to the nearest whole number
+  const temperature = Math.round(data.main.temp);
+  
+  // Get the city name and description (e.g., "Cairo", "clear sky")
+  const cityName = data.name;
+  const description = data.weather[0].description;
+
+  // Return the simple HTML structure
+  return `
+    <div class="weather-card">
+      <img class="weather-icon" src="${iconUrl}" alt="${description}" />
+      <div>
+        <div class="weather-temp">${temperature}°C</div>
+        <div>
+          <div class="weather-city">${cityName}</div>
+          <div class="weather-desc">${description}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * Main function to start the weather widget
+ */
+async function initWeather() {
+  // 1. Get HTML elements
+  const spinner = document.getElementById('weather-spinner');
+  const content = document.getElementById('weather-content');
+
+  // We are hardcoding the coordinates for Cairo (latitude: 30.0444, longitude: 31.2357)
+  const lat = 30.0444;
+  const lon = 31.2357;
+
+  try {
+    // 2. Fetch the data
+    const weatherData = await fetchWeather(lat, lon);
+    
+    // 3. Build HTML and inject it into the page
+    content.innerHTML = renderWeather(weatherData);
+    
+    // 4. Make the content visible
+    content.style.display = 'block';
+  } catch (error) {
+    // 5. If it fails, show an error message
+    content.innerHTML = `<div class="error-msg">${error.message}</div>`;
+    content.style.display = 'block';
+  } finally {
+    // 6. Hide the loading spinner
+    spinner.style.display = 'none';
+  }
+}
+
+// Start the widget when the page loads
 document.addEventListener('DOMContentLoaded', initWeather);

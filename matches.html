@@ -1,59 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>League Matches - NewsHub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="League Matches — View fixtures and results for the Big 5 European football leagues." />
+  <title>News Dashboard — Matches</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+  
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
 
-  <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-brand">📰 NewsHub</a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
-        <ul class="nav-menu" id="nav-menu">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="matches.html" class="nav-link active">Matches</a></li>
-          <li><a href="table.html" class="nav-link">League Table</a></li>
-          <li><a href="stats.html" class="nav-link">Statistics</a></li>
-        </ul>
-      </div>
-    </nav>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
 
-    <div class="page-container">
-      <h1 class="page-title">⚽ League Matches — Premier League 2024/25</h1>
+  <!-- ========================================== -->
+  <!-- Navigation Bar                             -->
+  <!-- ========================================== -->
+  <nav class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
+    <span class="text-xl font-extrabold text-blue-400">📰 NewsDash</span>
+    
+    <button class="block md:hidden text-2xl" onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
+    
+    <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
+      <li><a href="index.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏠 Home</a></li>
+      <li><a href="matches.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium">⚽ Matches</a></li>
+      <li><a href="table.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">📊 Table</a></li>
+      <li><a href="stats.html" class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800">🏆 Stats</a></li>
+    </ul>
+  </nav>
 
-      <div class="filters">
-        <div class="filter-group">
-          <label for="filter-team" class="filter-label">Filter by team</label>
-          <input type="text" id="filter-team" placeholder="Team name..." class="filter-input">
-        </div>
-        <div class="filter-group">
-          <label for="filter-date" class="filter-label">Filter by date</label>
-          <input type="date" id="filter-date" class="filter-input">
-        </div>
-      </div>
+  <!-- ========================================== -->
+  <!-- Main Page Content                          -->
+  <!-- ========================================== -->
+  <div class="max-w-[1440px] mx-auto p-4 md:p-8">
+    
+    <!-- Page Header -->
+    <h1 class="text-2xl font-bold mb-2 flex items-center gap-2">
+      <span class="section-dot"></span>
+      <span id="page-title">League Matches</span>
+    </h1>
+    <p class="text-slate-400 text-sm mb-6">Browse fixtures &amp; results for this season's top European leagues.</p>
 
-      <div id="matches-container" class="matches-list">
-        <div class="spinner"></div>
-      </div>
+    <!-- Navigation Tabs for Different Leagues -->
+    <div class="flex gap-2 flex-wrap mb-6" id="league-tabs"></div>
+
+    <!-- Search / Filter Inputs -->
+    <div class="flex gap-4 flex-wrap mb-6 max-sm:flex-col">
+      <input type="text" id="filter-team" placeholder="🔍 Filter by team name…"
+        class="px-4 py-2.5 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500 min-w-[200px] max-sm:min-w-full" />
+      <input type="date" id="filter-date"
+        class="px-4 py-2.5 border border-slate-600 rounded-lg bg-slate-800 text-sm outline-none focus:border-blue-500 min-w-[200px] max-sm:min-w-full" />
     </div>
 
-    <footer class="footer">
-      <p>&copy; 2025 NewsHub. Data provided by GNews, OpenWeatherMap, AllSportsAPI &amp; ExchangeRate-API.</p>
-    </footer>
+    <!-- Container for Matches List -->
+    <div id="matches-spinner" class="spinner"></div>
+    
+    <div id="matches-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <!-- JavaScript will inject .match-card HTML here -->
+    </div>
+    
+  </div>
 
-    <script src="config.js"></script>
-    <script src="assets/js/matches.js"></script>
-    <script>
-      document.getElementById('nav-toggle').addEventListener('click', () => {
-        document.getElementById('nav-menu').classList.toggle('open');
-      });
-    </script>
-  </body>
-
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/matches.js"></script>
+</body>
 </html>
