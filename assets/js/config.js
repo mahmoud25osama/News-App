@@ -1,5 +1,4 @@
 // ─── API Keys ────────────────────────────────────────────────
-// Replace these with your own free-tier keys
 const CONFIG = {
   GNEWS_API_KEY: '10d81657bcbc88f1e8ec3d5751d7a477',
   WEATHER_API_KEY: 'a43cc0740223a21a2996c5224f55c414',

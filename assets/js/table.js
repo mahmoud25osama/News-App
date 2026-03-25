@@ -19,7 +19,7 @@ function buildLeagueTabs() {
   container.innerHTML = htmlString;
   container.addEventListener('click', function (event) {
     const clickedButton = event.target.closest('.league-tab');
-    if (clickedButton === null) return; 
+    if (clickedButton === null) return;
     const allTabs = container.querySelectorAll('.league-tab');
     for (let j = 0; j < allTabs.length; j++) {
       allTabs[j].classList.remove('bg-blue-600', 'text-white', 'border-transparent');
@@ -31,12 +31,15 @@ function buildLeagueTabs() {
     for (let k = 0; k < CONFIG.LEAGUES.length; k++) {
       if (CONFIG.LEAGUES[k].id === currentLeagueId) {
         document.getElementById('page-title').textContent = `${ CONFIG.LEAGUES[k].name } Standings`;
-        break; 
+        break;
       }
     }
     loadStandings();
   });
 }
+
+
+
 async function fetchStandings(leagueId) {
   const url = `${ CONFIG.SPORTS_BASE }/?met=Standings&leagueId=${ leagueId }&APIkey=${ CONFIG.SPORTS_API_KEY }`;
   console.log("[Table] Requesting standings from:", url);
@@ -55,6 +58,9 @@ async function fetchStandings(leagueId) {
   }
   return [];
 }
+
+
+
 function renderStandings(standingsList) {
   if (standingsList.length === 0) {
     return '<div class="col-span-full text-gray-500 text-center py-8 text-sm pt-8">No standings data available.</div>';
@@ -129,6 +135,7 @@ function renderStandings(standingsList) {
       <span><span class="w-2.5 h-2.5 rounded-full inline-block mr-1 bg-red-500"></span> Relegation Zone</span>
     </div>`;
 }
+
 async function loadStandings() {
   console.log("[Table] Starting load...");
   const spinner = document.getElementById('table-spinner');
@@ -141,13 +148,13 @@ async function loadStandings() {
     content.innerHTML = tableHTMLString;
   } catch (err) {
     console.error("[Table] Load failed:", err);
-    content.innerHTML = `<div class="text-red-600 text-center py-4 text-sm pt-8">⚠️ Server Error: ${ err.message }</div>`;
+    content.innerHTML = `<div class="text-red-600 text-center py-4 text-sm pt-8">Server Error: ${ err.message }</div>`;
   } finally {
     spinner.style.display = 'none';
   }
 }
 document.addEventListener('DOMContentLoaded', function () {
-  buildLeagueTabs(); 
-  document.getElementById('page-title').textContent = `${ CONFIG.LEAGUES[0].name } Standings`; 
-  loadStandings(); 
+  buildLeagueTabs();
+  document.getElementById('page-title').textContent = `${ CONFIG.LEAGUES[0].name } Standings`;
+  loadStandings();
 });
