@@ -1,124 +1,77 @@
-// ═══════════════════════════════════════════════════════════
-//  exchange.js — Exchange rates widget + currency converter
-// ═══════════════════════════════════════════════════════════
-
-// We store all the fetched exchange rates here so we can reuse them later
-// without making a new API request every time the user types a number.
-let allRates = {};
-
-/**
- * Fetches the latest currency exchange rates compared to EGP (Egyptian Pound)
- */
+let allRatesCache = {};
 async function fetchRates() {
   const url = `${CONFIG.EXCHANGE_BASE}/${CONFIG.EXCHANGE_API_KEY}/latest/EGP`;
-  
+  console.log("[Exchange] Getting the latest money values from:", url);
   const response = await fetch(url);
-  
-  if (!response.ok) {
+  if (response.ok === false) {
     throw new Error(`Exchange API returned an error: ${response.status}`);
   }
-  
   const data = await response.json();
-  
-  // If the API returns rates, give them back. Otherwise return an empty object {}.
   if (data.conversion_rates) {
     return data.conversion_rates;
   } else {
     return {};
   }
 }
-
-/**
- * Generates the HTML to show the primary exchange rates (USD and SAR)
- */
-function renderRates(rates) {
-  // The API gives us how much 1 EGP is worth in USD. 
-  // To find how much 1 USD is in EGP, we do: 1 / rates.USD
-  
-  let usdToEgp = '—'; // Default empty state
-  if (rates.USD) {
-    usdToEgp = (1 / rates.USD).toFixed(2); // Keep 2 decimal places
+function renderRatesList(ratesObj) {
+  let usdToEgp = "—"; 
+  if (ratesObj.USD) {
+    usdToEgp = (1 / ratesObj.USD).toFixed(2);
   }
-
-  let sarToEgp = '—';
-  if (rates.SAR) {
-    sarToEgp = (1 / rates.SAR).toFixed(2);
+  let sarToEgp = "—";
+  if (ratesObj.SAR) {
+    sarToEgp = (1 / ratesObj.SAR).toFixed(2);
   }
-
   return `
-    <div class="flex justify-between items-center py-2.5 border-b border-slate-600/40">
-      <span class="font-semibold"><i class="fa-solid fa-dollar-sign text-green-400"></i> 1 USD</span>
-      <span class="text-lg text-green-500 font-bold">${usdToEgp} EGP</span>
+    <div class="flex justify-between items-center py-2.5 border-b border-gray-200">
+      <span class="font-semibold"><i class="fa-solid fa-dollar-sign text-green-600"></i> 1 USD</span>
+      <span class="text-lg text-blue-600 font-bold">${usdToEgp} EGP</span>
     </div>
     <div class="flex justify-between items-center py-2.5">
-      <span class="font-semibold"><i class="fa-solid fa-coins text-amber-400"></i> 1 SAR</span>
-      <span class="text-lg text-green-500 font-bold">${sarToEgp} EGP</span>
+      <span class="font-semibold"><i class="fa-solid fa-coins text-yellow-500"></i> 1 SAR</span>
+      <span class="text-lg text-blue-600 font-bold">${sarToEgp} EGP</span>
     </div>`;
 }
-
-/**
- * Runs every time the user types an amount or changes a currency select dropdown
- */
 function convertCurrency() {
-  // 1. Read the amount from the input box. If it's empty, use 0.
-  const amountInput = document.getElementById('conv-amount').value;
-  const amount = parseFloat(amountInput) || 0;
-  
-  // 2. Find out which currencies they selected
-  const fromCurrency = document.getElementById('conv-from').value;
-  const toCurrency = document.getElementById('conv-to').value;
-  const resultDiv = document.getElementById('conv-result');
-
-  // 3. Make sure we have rates for both currencies
-  if (!allRates[fromCurrency] || !allRates[toCurrency]) {
-    resultDiv.textContent = '—';
+  console.log("[Exchange] A user is typing or clicking in the converter box.");
+  const amountInputRaw = document.getElementById('conv-amount').value;
+  let amount = parseFloat(amountInputRaw);
+  if (isNaN(amount)) {
+    amount = 0;
+  }
+  const fromCurrencyString = document.getElementById('conv-from').value;
+  const toCurrencyString = document.getElementById('conv-to').value;
+  const resultDisplayDiv = document.getElementById('conv-result');
+  if (allRatesCache[fromCurrencyString] === undefined || allRatesCache[toCurrencyString] === undefined) {
+    resultDisplayDiv.textContent = '—';
     return;
   }
-
-  // 4. Calculate the conversion.
-  // We use EGP as our "base". 
-  // Step A: Convert the 'from' amount into EGP by dividing.
-  // Step B: Convert the EGP amount into the 'to' currency by multiplying.
-  const baseValueInEGP = amount / allRates[fromCurrency];
-  const finalConvertedValue = baseValueInEGP * allRates[toCurrency];
-
-  // 5. Display the result, keeping 4 decimal places
-  resultDiv.textContent = `${amount} ${fromCurrency} = ${finalConvertedValue.toFixed(4)} ${toCurrency}`;
+  const baseValueInEGP = amount / allRatesCache[fromCurrencyString];
+  const finalConvertedValue = baseValueInEGP * allRatesCache[toCurrencyString];
+  resultDisplayDiv.textContent = `${amount} ${fromCurrencyString} = ${finalConvertedValue.toFixed(4)} ${toCurrencyString}`;
 }
-
-/**
- * Main initialization function to fire up the widget
- */
 async function initExchange() {
-  const spinner = document.getElementById('exchange-spinner');
-  const content = document.getElementById('exchange-content');
-  const ratesList = document.getElementById('rates-list');
-
+  const spinnerContainer = document.getElementById('exchange-spinner');
+  const widgetContent = document.getElementById('exchange-content');
+  const topRatesListContainer = document.getElementById('rates-list');
   try {
-    // 1. Fetch rates and store them globally
-    allRates = await fetchRates();
-    
-    // 2. Render the top list (USD, SAR)
-    ratesList.innerHTML = renderRates(allRates);
-    
-    // 3. Show the whole widget
-    content.style.display = 'block';
-
-    // 4. Now that we have data, we listen for typed inputs or dropdown changes
-    document.getElementById('conv-amount').addEventListener('input', convertCurrency);
-    document.getElementById('conv-from').addEventListener('change', convertCurrency);
-    document.getElementById('conv-to').addEventListener('change', convertCurrency);
-    
-    // 5. Run the conversion once manually to show a starting value (e.g. 1 USD -> EGP)
+    allRatesCache = await fetchRates();
+    const ratesHtmlString = renderRatesList(allRatesCache);
+    topRatesListContainer.innerHTML = ratesHtmlString;
+    widgetContent.style.display = 'block';
+    const amountBox = document.getElementById('conv-amount');
+    const fromChoiceBox = document.getElementById('conv-from');
+    const toChoiceBox = document.getElementById('conv-to');
+    amountBox.addEventListener('input', convertCurrency);
+    fromChoiceBox.addEventListener('change', convertCurrency);
+    toChoiceBox.addEventListener('change', convertCurrency);
     convertCurrency();
-    
   } catch (error) {
-    content.innerHTML = `<div class="text-red-500 text-center py-4 text-sm">⚠️ Failed to load rates: ${error.message}</div>`;
-    content.style.display = 'block';
+    console.error("[Exchange] Oh no! Conversion failed:", error);
+    widgetContent.innerHTML = `<div class="text-red-600 text-center py-4 text-sm">⚠️ Failed to connect to exchange rates.</div>`;
+    widgetContent.style.display = 'block';
   } finally {
-    spinner.style.display = 'none';
+    spinnerContainer.style.display = 'none';
   }
 }
-
-// Start when the page loads
 document.addEventListener('DOMContentLoaded', initExchange);

@@ -4,8 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-      content="League Standings — View full standings tables for the Big 5 European football leagues." />
+    <meta name="description" content="League Standings — View full standings tables for European football leagues." />
     <title>News Dashboard — Table</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,54 +14,63 @@
       }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
-  <body class="bg-slate-900 text-slate-100 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen font-sans">
 
-    <nav
-      class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-slate-900/85 backdrop-blur-2xl border-b border-slate-600/40">
-      <span class="text-xl font-extrabold text-blue-400"><i class="fa-regular fa-newspaper"></i> NewsDash</span>
+    <nav class="sticky top-0 z-50 flex items-center justify-between h-16 px-4 md:px-8 bg-white border-b border-gray-200 shadow-sm">
+      <span class="text-xl font-extrabold text-blue-600">
+        <i class="fa-regular fa-newspaper"></i> NewsDash
+      </span>
 
-      <button class="block md:hidden text-2xl"
-        onclick="document.getElementById('nav-menu').classList.toggle('open')">☰</button>
+      <button class="block md:hidden text-2xl text-gray-600" onclick="document.getElementById('nav-menu').classList.toggle('hidden')">
+        ☰
+      </button>
 
-      <ul id="nav-menu" class="hidden md:flex gap-1 list-none">
-        <li><a href="index.html"
-            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
-              class="fa-solid fa-house"></i> Home</a></li>
-        <li><a href="matches.html"
-            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
-              class="fa-solid fa-futbol"></i> Matches</a></li>
-        <li><a href="table.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium"><i
-              class="fa-solid fa-table"></i> Table</a></li>
-        <li><a href="stats.html"
-            class="px-4 py-2 rounded-lg text-slate-400 font-medium hover:text-white hover:bg-slate-800"><i
-              class="fa-solid fa-trophy"></i> Stats</a></li>
+      <ul id="nav-menu" class="hidden md:flex gap-2 list-none m-0 p-0 items-center">
+        <li>
+          <a href="index.html" class="block px-4 py-2 rounded text-gray-600 font-medium hover:text-blue-600 hover:bg-blue-50 transition border border-transparent">
+            <i class="fa-solid fa-house"></i> Home
+          </a>
+        </li>
+        <li>
+          <a href="matches.html" class="block px-4 py-2 rounded text-gray-600 font-medium hover:text-blue-600 hover:bg-blue-50 transition border border-transparent">
+            <i class="fa-solid fa-futbol"></i> Matches
+          </a>
+        </li>
+        <li>
+
+          <a href="table.html" class="block px-4 py-2 rounded border border-transparent bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+            <i class="fa-solid fa-table"></i> Table
+          </a>
+        </li>
+        <li>
+          <a href="stats.html" class="block px-4 py-2 rounded text-gray-600 font-medium hover:text-blue-600 hover:bg-blue-50 transition border border-transparent">
+            <i class="fa-solid fa-trophy"></i> Stats
+          </a>
+        </li>
       </ul>
     </nav>
 
-    <div class="max-w-[1440px] mx-auto p-4 md:p-8">
+    <div class="max-w-[1440px] mx-auto p-4 md:p-8 mt-2">
 
-      <h1 class="text-2xl font-bold mb-2 flex items-center gap-2">
-        <span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span>
+      <h1 class="text-2xl font-bold mb-2 flex items-center gap-2 text-gray-800">
+        <span class="w-3 h-3 bg-blue-600 rounded-full inline-block"></span>
         <span id="page-title">League Standings</span>
       </h1>
-      <p class="text-slate-400 text-sm mb-6">Full standings for the current season.</p>
+      <p class="text-gray-500 text-sm mb-6">Full standings for the current season.</p>
 
       <div class="flex gap-2 flex-wrap mb-6" id="league-tabs"></div>
 
-      <div id="table-spinner"
-        class="w-10 h-10 border-[3px] border-slate-600 border-t-blue-500 rounded-full animate-spin mx-auto my-8"></div>
+      <div id="table-spinner" class="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto my-8"></div>
 
-      <div id="table-content">
-      </div>
+      <div id="table-content"></div>
 
     </div>
 
     <script src="assets/js/config.js"></script>
     <script src="assets/js/table.js"></script>
-  </body>
 
+  </body>
 </html>
